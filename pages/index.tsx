@@ -1,15 +1,22 @@
-import React from 'react'
-import { Container, AppBar, Toolbar, Typography, List, ListItem, ListItemIcon, ListItemText, Checkbox } from '@material-ui/core'
+import React, { FormEvent } from 'react'
+import { Container, AppBar, Toolbar, Typography, List, ListItem, ListItemIcon, ListItemText, Checkbox, TextField } from '@material-ui/core'
 
 export default () => {
+  const handleSbumit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+  }
+
   return (
-    <Container>
-      <AppBar>
+    <div>
+      <AppBar position="sticky">
         <Toolbar>
           <Typography>CTODO</Typography>
         </Toolbar>
       </AppBar>
       <Container>
+        <form noValidate autoComplete="off" onSubmit={handleSbumit}>
+          <TextField id="command" label="Command" fullWidth={true} margin="normal" placeholder="Type command" />
+        </form>
         <List>
           {[0,1,2,3].map(value => {
             return (
@@ -28,6 +35,6 @@ export default () => {
           })}
         </List>
       </Container>
-    </Container>
+    </div>
   );
 }
