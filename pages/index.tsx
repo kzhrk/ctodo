@@ -1,10 +1,21 @@
-import React, { FormEvent } from 'react'
-import { Container, AppBar, Toolbar, Typography, List, ListItem, ListItemIcon, ListItemText, Checkbox, TextField } from '@material-ui/core'
+import React, { FormEvent } from "react";
+import {
+  Container,
+  AppBar,
+  Toolbar,
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Checkbox,
+  TextField,
+} from "@material-ui/core";
 
-export default () => {
-  const handleSbumit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-  }
+const App: React.FC = () => {
+  const handleSbumit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+  };
 
   return (
     <div>
@@ -15,12 +26,18 @@ export default () => {
       </AppBar>
       <Container>
         <form noValidate autoComplete="off" onSubmit={handleSbumit}>
-          <TextField id="command" label="Command" fullWidth={true} margin="normal" placeholder="Type command" />
+          <TextField
+            id="command"
+            label="Command"
+            fullWidth={true}
+            margin="normal"
+            placeholder="Type command"
+          />
         </form>
         <List>
-          {[0,1,2,3].map(value => {
+          {[0, 1, 2, 3].map((value) => {
             return (
-              <ListItem dense button>
+              <ListItem dense button key={value}>
                 <ListItemIcon>
                   <Checkbox
                     edge="start"
@@ -31,10 +48,12 @@ export default () => {
                 </ListItemIcon>
                 <ListItemText primary={`todo ${value}`} />
               </ListItem>
-            )
+            );
           })}
         </List>
       </Container>
     </div>
   );
-}
+};
+
+export default App;
