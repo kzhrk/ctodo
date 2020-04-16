@@ -41,7 +41,7 @@
     }
   },
   "keywords": [
-    "tood"
+    "todo"
   ],
   "license": "MIT",
   "lint-staged": {
