@@ -1,12 +1,14 @@
 {
-  "name": "with-typescript-styled-components",
+  "name": "ctodo",
+  "description": "This todo application can manage by using command palette.",
   "version": "1.0.0",
-  "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint './**/*.{js,ts,tsx}'",
-    "lint:fix": "eslint './**/*.{js,ts,tsx}' --fix"
+  "author": {
+    "email": "info@kzhrk.com",
+    "url": "https://kzhrk.dev",
+    "name": "Kazuhiro Kobayashi"
+  },
+  "bugs": {
+    "url": "https://github.com/kzhrk/ctodo/issues"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.10",
@@ -32,15 +34,31 @@
     "prettier": "^2.0.4",
     "typescript": "3.5.2"
   },
+  "homepage": "https://github.com/kzhrk/ctodo#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "keywords": [
+    "todo"
+  ],
   "license": "MIT",
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kzhrk/ctodo.git"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next",
+    "lint": "eslint './**/*.{js,ts,tsx}'",
+    "lint:fix": "eslint './**/*.{js,ts,tsx}' --fix",
+    "start": "next start"
   }
 }
