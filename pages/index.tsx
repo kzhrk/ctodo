@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import {
   Container,
   AppBar,
@@ -10,15 +10,45 @@ import {
   ListItemText,
   Checkbox,
   TextField,
+  Box,
 } from "@material-ui/core";
+import { Provider } from "react-redux";
+import store from "../stores/todo";
 
 const App: React.FC = () => {
+  const [isShowCommand, setIsShowCommand] = useState(false);
+
+  const commandList = [
+    {
+      label: "Add Todo",
+      command: "addTodo",
+    },
+    {
+      label: "Delete Todo",
+      command: "deleteTodo",
+    },
+    {
+      label: "Done Todo",
+      command: "doneTodo",
+    },
+  ];
+
   const handleSbumit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
   };
 
+  const handleInput = (e: FormEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+
+    if ((e.target as HTMLInputElement)!.value !== "") {
+      setIsShowCommand(true);
+    } else {
+      setIsShowCommand(false);
+    }
+  };
+
   return (
-    <div>
+    <Provider store={store}>
       <AppBar position="sticky">
         <Toolbar>
           <Typography>CTODO</Typography>
@@ -32,12 +62,26 @@ const App: React.FC = () => {
             fullWidth={true}
             margin="normal"
             placeholder="Type command"
+            onInput={handleInput}
           />
+          {isShowCommand && (
+            <Box>
+              <List>
+                {commandList.map((command) => {
+                  return (
+                    <ListItem dense button key={command.command}>
+                      <ListItemText primary={command.label} />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </Box>
+          )}
         </form>
         <List>
-          {[0, 1, 2, 3].map((value) => {
+          {store.getState().todoList.map((todo) => {
             return (
-              <ListItem dense button key={value}>
+              <ListItem dense button key={todo.id}>
                 <ListItemIcon>
                   <Checkbox
                     edge="start"
@@ -46,13 +90,13 @@ const App: React.FC = () => {
                     disableRipple
                   />
                 </ListItemIcon>
-                <ListItemText primary={`todo ${value}`} />
+                <ListItemText primary={`${todo.task}`} />
               </ListItem>
             );
           })}
         </List>
       </Container>
-    </div>
+    </Provider>
   );
 };
 

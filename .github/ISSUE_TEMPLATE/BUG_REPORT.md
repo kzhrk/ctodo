@@ -1,5 +1,6 @@
 ---
 name: 'Bug Report'
+about: 'Bug report for web apps are here'
 labels: bug
 ---
 
