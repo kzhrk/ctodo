@@ -31,7 +31,7 @@ export const reducer: Reducer<TodoStore.State, TodoStore.TodoActions> = (
     }
     case UPDATE_TODO: {
       const todoList = state.todoList;
-      const index = todoList.indexOf(action.todo);
+      const index = todoList.findIndex((todo) => todo.id === action.todo.id);
       todoList[index] = action.todo;
 
       return {
@@ -64,6 +64,10 @@ export const actionCreators = {
       index,
     };
   },
+};
+
+export const initializeStore = (initialState: TodoStore.State) => {
+  return createStore(reducer, initialState);
 };
 
 export default createStore(reducer, initialTodoState);
