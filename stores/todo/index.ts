@@ -1,8 +1,13 @@
 import { createStore, Reducer } from "redux";
+import { loadState } from "../../utils/localStorage";
 
-const initialTodoState: TodoStore.State = {
-  todoList: [],
-};
+const initialTodoState: TodoStore.State = loadState()
+  ? {
+      todoList: loadState()!.todoList,
+    }
+  : {
+      todoList: [],
+    };
 
 export const CREATE_TODO = "CREATE_TODO";
 export const DELETE_TODO = "DELETE_TODO";
@@ -70,4 +75,4 @@ export const initializeStore = (initialState: TodoStore.State) => {
   return createStore(reducer, initialState);
 };
 
-export default createStore(reducer, initialTodoState);
+export default createStore(reducer);
