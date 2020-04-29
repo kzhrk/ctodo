@@ -1,52 +1,10 @@
-import React, { FormEvent, useState } from "react";
-import {
-  Container,
-  AppBar,
-  Toolbar,
-  Typography,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Checkbox,
-  TextField,
-  Box,
-} from "@material-ui/core";
-import { Provider } from "react-redux";
+import React from "react";
 import store from "../stores/todo";
-
+import { Provider } from "react-redux";
+import TodoList from "../components/TodoList";
+import CommandPalette from "../components/CommandPalette";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 const App: React.FC = () => {
-  const [isShowCommand, setIsShowCommand] = useState(false);
-
-  const commandList = [
-    {
-      label: "Add Todo",
-      command: "addTodo",
-    },
-    {
-      label: "Delete Todo",
-      command: "deleteTodo",
-    },
-    {
-      label: "Done Todo",
-      command: "doneTodo",
-    },
-  ];
-
-  const handleSbumit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-  };
-
-  const handleInput = (e: FormEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-
-    if ((e.target as HTMLInputElement)!.value !== "") {
-      setIsShowCommand(true);
-    } else {
-      setIsShowCommand(false);
-    }
-  };
-
   return (
     <Provider store={store}>
       <AppBar position="sticky">
@@ -54,48 +12,8 @@ const App: React.FC = () => {
           <Typography>CTODO</Typography>
         </Toolbar>
       </AppBar>
-      <Container>
-        <form noValidate autoComplete="off" onSubmit={handleSbumit}>
-          <TextField
-            id="command"
-            label="Command"
-            fullWidth={true}
-            margin="normal"
-            placeholder="Type command"
-            onInput={handleInput}
-          />
-          {isShowCommand && (
-            <Box>
-              <List>
-                {commandList.map((command) => {
-                  return (
-                    <ListItem dense button key={command.command}>
-                      <ListItemText primary={command.label} />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </Box>
-          )}
-        </form>
-        <List>
-          {store.getState().todoList.map((todo) => {
-            return (
-              <ListItem dense button key={todo.id}>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={true}
-                    tabIndex={-1}
-                    disableRipple
-                  />
-                </ListItemIcon>
-                <ListItemText primary={`${todo.task}`} />
-              </ListItem>
-            );
-          })}
-        </List>
-      </Container>
+      <CommandPalette />
+      <TodoList />
     </Provider>
   );
 };
