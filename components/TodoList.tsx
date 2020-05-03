@@ -50,9 +50,9 @@ const TodoList: React.FC<Props> = (props) => {
   );
 };
 
-const mapStateToProps = (state: TodoStore.State) => {
+const mapStateToProps = (state: State) => {
   return {
-    todoList: [...state.todoList],
+    todoList: [...state.todo.todoList],
   };
 };
 

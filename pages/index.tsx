@@ -1,13 +1,14 @@
 import React from "react";
-import store from "../stores/todo";
+import store from "../stores";
 import { Provider } from "react-redux";
 import TodoList from "../components/TodoList";
 import CommandPalette from "../components/CommandPalette";
+import InputPalette from "../components/InputPalette";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { saveState } from "../utils/localStorage";
 
 store.subscribe(() => {
-  saveState(store.getState());
+  saveState(store.getState().todo);
 });
 
 const App: React.FC = () => {
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         </Toolbar>
       </AppBar>
       <CommandPalette />
+      <InputPalette />
       <TodoList />
     </Provider>
   );

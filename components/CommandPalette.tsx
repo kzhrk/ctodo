@@ -1,38 +1,47 @@
-import React, { FormEvent, useState, useEffect, MouseEvent } from "react";
+import React, { FormEvent, useState, useEffect } from "react";
 import { List, ListItem, ListItemText, TextField } from "@material-ui/core";
-import { actionCreators } from "../stores/todo";
+import { actionCreators as todoActionCreators } from "../stores/todo";
+import { actionCreators as commandActionCreators } from "../stores/command";
 import { connect } from "react-redux";
 
-const { createTodo } = actionCreators;
+const { createTodo, deleteTodo } = todoActionCreators;
+const { setCommand, resetCommand } = commandActionCreators;
 
 type Props = {
+  command: CommandStore.Command | null;
   createTodo: (todo: TodoStore.Todo) => void;
+  deleteTodo: (index: number) => void;
+  setCommand: (command: CommandStore.Command) => void;
+  resetCommand: () => void;
+};
+
+type DefaultCommand = {
+  label: string;
+  command: CommandStore.Command;
 };
 
 const CommandPalette: React.FC<Props> = (props) => {
-  const defaultCommandList = [
+  const defaultCommandList: DefaultCommand[] = [
     {
       label: "Add Todo",
-      command: "addTodo",
+      command: "add",
     },
     {
       label: "Delete Todo",
-      command: "deleteTodo",
+      command: "delete",
     },
     {
       label: "Done Todo",
-      command: "doneTodo",
+      command: "done",
     },
   ];
-  const [isShowCommand, setIsShowCommand] = useState(true);
   const [typedCommand, setTypedCommand] = useState("");
-  const [commandList, setCommandList] = useState(defaultCommandList);
+  const [commandList, setCommandList] = useState([] as any[]);
   useEffect(() => {
-    setIsShowCommand(typedCommand !== "");
-
     setCommandList(
       defaultCommandList.filter((command) => {
-        return command.command.indexOf(typedCommand) !== -1;
+        if (typedCommand === "") return false;
+        return command.label.toLowerCase().indexOf(typedCommand) !== -1;
       })
     );
   }, [typedCommand]);
@@ -46,18 +55,22 @@ const CommandPalette: React.FC<Props> = (props) => {
     setTypedCommand((e.target as HTMLInputElement).value);
   };
 
-  const handleClickCommand = (e: MouseEvent<HTMLElement>): void => {
-    e.preventDefault();
-    props.createTodo({
-      id: "" + Date.now(),
-      checked: false,
-      done: false,
-      task: "タスク",
-      atStart: 0,
-      atEnd: 0,
-      memo: "",
-    });
+  const handleClickCommand = (command: CommandStore.Command): void => {
+    switch (command) {
+      case "add": {
+        props.setCommand(command);
+        break;
+      }
+      case "delete": {
+        props.setCommand(command);
+        break;
+      }
+      default:
+        break;
+    }
   };
+
+  if (props.command) return null;
 
   return (
     <form noValidate autoComplete="off" onSubmit={handleSbumit}>
@@ -69,22 +82,31 @@ const CommandPalette: React.FC<Props> = (props) => {
         placeholder="Type command"
         onInput={handleInput}
       />
-      {isShowCommand && (
-        <List>
-          {commandList.map((command) => {
-            return (
-              <ListItem dense button key={command.command}>
-                <ListItemText
-                  primary={command.label}
-                  onClick={handleClickCommand}
-                />
-              </ListItem>
-            );
-          })}
-        </List>
-      )}
+      <List>
+        {commandList.map((command) => {
+          return (
+            <ListItem dense button key={command.command}>
+              <ListItemText
+                primary={command.label}
+                onClick={() => handleClickCommand(command.command)}
+              />
+            </ListItem>
+          );
+        })}
+      </List>
     </form>
   );
 };
 
-export default connect(null, { createTodo })(CommandPalette);
+const mapStateToProps = (state: State) => {
+  return {
+    command: state.command.command,
+  };
+};
+
+export default connect(mapStateToProps, {
+  createTodo,
+  deleteTodo,
+  setCommand,
+  resetCommand,
+})(CommandPalette);
