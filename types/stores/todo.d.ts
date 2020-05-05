@@ -26,6 +26,12 @@ namespace TodoStore {
     todo: Todo;
   }
 
+  interface ActionCreators {
+    createTodo: (todo: Todo) => void;
+    deleteTodo: (index: number) => void;
+    updateTodo: (todo: Todo) => void;
+  }
+
   export type TodoActions =
     | CreateTodoAction
     | DeleteTodoAction
