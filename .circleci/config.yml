@@ -38,7 +38,9 @@ jobs:
       - setup
       - run:
           name: deploy to now
-          command: yarn deploy:production ~/project
+          command: |
+            cd ~/project
+            yarn deploy:production
 
 workflows:
   version: 2
