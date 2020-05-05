@@ -34,7 +34,7 @@ jobs:
       - setup
       - run:
           name: deploy to now
-          command: yarn now --token=$NOW_TOKEN
+          command: yarn deploy:production
 
 workflows:
   version: 2

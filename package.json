@@ -64,6 +64,7 @@
     "dev": "next",
     "lint": "eslint './**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './**/*.{js,ts,tsx}' --fix",
-    "start": "next start"
+    "start": "next start",
+    "deploy:production": "now deploy --token=$NOW_TOKEN"
   }
 }
