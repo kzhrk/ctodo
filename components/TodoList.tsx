@@ -13,7 +13,7 @@ const { updateTodo } = actionCreators;
 
 type Props = {
   todoList: TodoStore.State["todoList"];
-  updateTodo: (todo: TodoStore.Todo) => void;
+  updateTodo: TodoStore.ActionCreators["updateTodo"];
 };
 
 const TodoList: React.FC<Props> = (props) => {
@@ -25,7 +25,7 @@ const TodoList: React.FC<Props> = (props) => {
   };
 
   return (
-    <List>
+    <List disablePadding>
       {props.todoList.map((todo: TodoStore.Todo) => {
         return (
           <ListItem
