@@ -1,0 +1,42 @@
+version: 2.0.3
+orbs:
+  node: circleci/node@2.y
+
+jobs:
+  setup:
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+          node-version: 12.16.3
+      - run:
+          name: Versions
+          command: |
+            node --version
+            npm --version
+            yarn --version
+      - node/install-packages:
+          cache-key: yarn.lock
+          pkg-manager: yarn
+  build:
+    steps:
+      - run:
+          name: build
+          command: yarn build
+  deploy:
+    steps:
+      - run:
+          name: deploy to now
+          command: now deploy --token $NOW_TOKEN
+
+workflows:
+  version: 2
+  now_deploy:
+    jobs:
+      - setup
+      - build:
+          requires:
+            - setup
+      - deploy:
+          requires:
+            - build
