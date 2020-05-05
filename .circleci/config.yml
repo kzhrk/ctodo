@@ -8,7 +8,7 @@ commands:
     steps:
       - checkout
       - node/install:
-          node-version: 12.16.2
+          node-version: 12.16.3
           install-yarn: true
       - run:
           name: Versions
@@ -22,14 +22,18 @@ commands:
 
 jobs:
   build:
-    executor: node/default
+    executor:
+      name: node/default
+      tag: 12.16.3
     steps:
       - setup
       - run:
           name: build
           command: yarn build
   deploy:
-    executor: node/default
+    executor:
+      name: node/default
+      tag: 12.16.3
     steps:
       - setup
       - run:
