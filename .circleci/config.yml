@@ -8,7 +8,7 @@ commands:
     parameters:
       now-project:
         type: string
-        default: stg-ctodo
+        default: ~/stg-ctodo
     steps:
       - checkout
       - node/install:
