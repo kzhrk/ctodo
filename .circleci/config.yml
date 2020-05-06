@@ -6,7 +6,7 @@ orbs:
 commands:
   setup:
     parameters:
-      now-project:
+      project:
         type: string
         default: stg-ctodo
     steps:
@@ -20,25 +20,23 @@ commands:
             node -v
             npm -v
             yarn -v
-            ls -l
-            pwd
       - node/install-packages:
-          app-dir: ~/<< parameters.now-project >>
+          app-dir: ~/<< parameters.project >>
           pkg-manager: yarn
           cache-key: yarn.lock
-      - run:
-          name: Move project dir
-          command: |
-            pwd
-            ls
 jobs:
   deploy:
-    working_directory: ~/stg-ctodo
+    parameters:
+      project:
+        type: string
+        default: stg-ctodo
+    working_directory: ~/<< parameters.project >>
     executor:
       name: node/default
       tag: 12.16.3
     steps:
-      - setup
+      - setup:
+          project: << parameters.project >>
       - run:
           name: deploy to now
           command: |
@@ -46,6 +44,17 @@ jobs:
 
 workflows:
   version: 2
-  now_deploy:
+  deploy:
     jobs:
-      - deploy
+      - deploy:
+          project: stg-ctodo
+          filters:
+            branches:
+              ignore:
+                - master
+      - deploy:
+          project: ctodo
+          filters:
+            branches:
+              only:
+                - master
