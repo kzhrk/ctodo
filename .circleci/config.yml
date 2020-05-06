@@ -5,6 +5,10 @@ orbs:
 
 commands:
   setup:
+    parameters:
+      project:
+        type: string
+        default: stg-ctodo
     steps:
       - checkout
       - node/install:
@@ -17,9 +21,7 @@ commands:
             npm -v
             yarn -v
             pwd
-            echo $CIRCLE_WORKING_DIRECTORY
       - node/install-packages:
-          app-dir: <CIRCLE_WORKING_DIRECTORY>
           pkg-manager: yarn
           cache-key: yarn.lock
       - run:
@@ -28,24 +30,18 @@ commands:
             pwd
             ls
 jobs:
-  prod-deploy:
-    working_directory: ~/ctodo
+  deploy:
+    parameters:
+      project:
+        type: string
+        default: stg-ctodo
+    working_directory: << parameters.project >>
     executor:
       name: node/default
       tag: 12.16.3
     steps:
-      - setup
-      - run:
-          name: deploy to now
-          command: |
-            yarn deploy
-  stg-deploy:
-    working_directory: ~/stg-ctodo
-    executor:
-      name: node/default
-      tag: 12.16.3
-    steps:
-      - setup
+      - setup:
+          project: << parameters.project >>
       - run:
           name: deploy to now
           command: |
@@ -55,8 +51,10 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - stg-deploy
-      - prod-deploy:
+      - deploy:
+          project: stg-ctodo
+      - deploy:
+          project: ctodo
           filters:
             branches:
               only:
