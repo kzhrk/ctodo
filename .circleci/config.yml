@@ -28,9 +28,12 @@ commands:
       - run:
           name: Move project dir
           command: |
-            mv project << parameters.now-project >>
+            pwd
+            ls
+            mv ~/project ~/<< parameters.now-project >>
 jobs:
   build:
+    working_directory: ~/stg-ctodo
     executor:
       name: node/default
       tag: 12.16.3
@@ -40,6 +43,7 @@ jobs:
           name: build
           command: yarn build
   deploy:
+    working_directory: ~/stg-ctodo
     executor:
       name: node/default
       tag: 12.16.3
