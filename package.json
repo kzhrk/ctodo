@@ -65,6 +65,7 @@
     "lint": "eslint './**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './**/*.{js,ts,tsx}' --fix",
     "start": "next start",
-    "deploy": "now -t $NOW_TOKEN -c"
+    "deploy:prodction": "now -t $NOW_TOKEN -c --prod",
+    "deploy:preview": "now -t $NOW_TOKEN -c"
   }
 }

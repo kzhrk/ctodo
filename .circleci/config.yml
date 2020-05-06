@@ -41,19 +41,34 @@ jobs:
       - run:
           name: deploy to now
           command: |
-            yarn deploy
+            if [ ! ${CIRCLE_BRANCH} = staging ] && [ ! ${CIRCLE_BRANCH} = master ]; then
+              yarn deploy:preview
+            else
+              yarn deploy:production
+            fi
 
 workflows:
   version: 2
   deploy:
     jobs:
       - deploy:
+          name: Deploy to preview
           project: stg-ctodo
           filters:
             branches:
               ignore:
+                - staging
                 - master
+                - development
       - deploy:
+          name: Deploy to staging
+          project: stg-ctodo
+          filters:
+            branches:
+              only:
+                - staging
+      - deploy:
+          name: Deploy to production
           project: ctodo
           filters:
             branches:
