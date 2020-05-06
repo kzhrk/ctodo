@@ -20,10 +20,10 @@ commands:
           name: Set env variables
           command: |
             if [ ${CIRCLE_BRANCH} = master ]; then
-              mv -p project ctodo
+              mv project ctodo
               echo 'export PROJECT_NAME=ctodo' >> $BASH_ENV
             else
-              mv -p project stg-ctodo
+              mv project stg-ctodo
               echo 'export PROJECT_NAME=stg-ctodo' >> $BASH_ENV
             fi
       - node/install-packages:
