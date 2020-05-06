@@ -19,16 +19,18 @@ commands:
       - run:
           name: Set env variables
           command: |
-            ls -l
-            pwd
             if [ ${CIRCLE_BRANCH} = master ]; then
-              echo 'export PROJECT_NAME=ctodo' >> $BASH_ENV
+              mv project ctodo
+              echo "export PROJECT_NAME=ctodo" >> $BASH_ENV
+              source $BASH_ENV
             else
-              echo 'export PROJECT_NAME=stg-ctodo' >> $BASH_ENV
+              mv project stg-ctodo
+              echo "export PROJECT_NAME=stg-ctodo" >> $BASH_ENV
+              source $BASH_ENV
             fi
             echo $PROJECT_NAME
       - node/install-packages:
-          app-dir: ~/$PROJECT_NAME
+          app-dir: ~/${PROJECT_NAME}
           pkg-manager: yarn
           cache-key: yarn.lock
 
