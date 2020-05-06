@@ -23,6 +23,7 @@ commands:
             ls -l
             pwd
       - node/install-packages:
+          app-dir: ~/<< parameters.now-project >>
           pkg-manager: yarn
           cache-key: yarn.lock
       - run:
@@ -30,7 +31,6 @@ commands:
           command: |
             pwd
             ls
-            mv ~/project ~/<< parameters.now-project >>
 jobs:
   build:
     working_directory: ~/stg-ctodo
