@@ -1,0 +1,76 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@2.0.3
+
+commands:
+  setup:
+    parameters:
+      project:
+        type: string
+        default: stg-ctodo
+    steps:
+      - checkout
+      - node/install:
+          node-version: 12.16.3
+          install-yarn: true
+      - run:
+          name: Versions
+          command: |
+            node -v
+            npm -v
+            yarn -v
+      - node/install-packages:
+          app-dir: ~/<< parameters.project >>
+          pkg-manager: yarn
+          cache-key: yarn.lock
+
+jobs:
+  deploy:
+    parameters:
+      project:
+        type: string
+        default: stg-ctodo
+    working_directory: ~/<< parameters.project >>
+    executor:
+      name: node/default
+      tag: 12.16.3
+    steps:
+      - setup:
+          project: << parameters.project >>
+      - run:
+          name: deploy to now
+          command: |
+            if [ ! ${CIRCLE_BRANCH} = staging ] && [ ! ${CIRCLE_BRANCH} = master ]; then
+              yarn deploy:preview
+            else
+              yarn deploy:production
+            fi
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          name: Deploy to preview
+          project: stg-ctodo
+          filters:
+            branches:
+              ignore:
+                - staging
+                - master
+                - development
+      - deploy:
+          name: Deploy to staging
+          project: stg-ctodo
+          filters:
+            branches:
+              only:
+                - staging
+      - deploy:
+          name: Deploy to production
+          project: ctodo
+          filters:
+            branches:
+              only:
+                - master
