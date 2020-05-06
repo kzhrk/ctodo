@@ -20,14 +20,14 @@ commands:
           name: Set env variables
           command: |
             if [ ${CIRCLE_BRANCH} = master ]; then
-              echo "export PROJECT_NAME=ctodo" >> $BASH_ENV
+              echo "export APP_DIR=~/ctodo" >> $BASH_ENV
               source $BASH_ENV
             else
-              echo "export PROJECT_NAME=stg-ctodo" >> $BASH_ENV
+              echo "export APP_DIR=~/stg-ctodo" >> $BASH_ENV
               source $BASH_ENV
             fi
       - node/install-packages:
-          app-dir: ~/$PROJECT_NAME
+          app-dir: $APP_DIR
           pkg-manager: yarn
           cache-key: yarn.lock
 
