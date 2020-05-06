@@ -25,7 +25,7 @@ commands:
               echo 'export PROJECT_NAME=stg-ctodo' >> $BASH_ENV
             fi
       - node/install-packages:
-          app-dir: ~/$PROJECT_NAME
+          app-dir: ~/stg-ctodo
           pkg-manager: yarn
           cache-key: yarn.lock
 
