@@ -16,7 +16,16 @@ commands:
             node -v
             npm -v
             yarn -v
+      - run:
+          name: Set env variables
+          command: |
+            if [ ${CIRCLE_BRANCH} = master ]; then
+              PROJECT_NAME="ctodo"
+            else
+              PROJECT_NAME="stg-ctodo"
+            fi
       - node/install-packages:
+          app-dir: ~/$PROJECT_NAME
           pkg-manager: yarn
           cache-key: yarn.lock
 
