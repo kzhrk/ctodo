@@ -19,7 +19,7 @@ commands:
             pwd
             echo $CIRCLE_WORKING_DIRECTORY
       - node/install-packages:
-          app-dir: $CIRCLE_WORKING_DIRECTORY
+          app-dir: <CIRCLE_WORKING_DIRECTORY>
           pkg-manager: yarn
           cache-key: yarn.lock
       - run:
