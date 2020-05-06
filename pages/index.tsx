@@ -1,58 +1,40 @@
-import React, { FormEvent } from "react";
-import {
-  Container,
-  AppBar,
-  Toolbar,
-  Typography,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Checkbox,
-  TextField,
-} from "@material-ui/core";
+import React from "react";
+import store from "../stores";
+import { Provider } from "react-redux";
+import TodoList from "../components/TodoList";
+import CommandPalette from "../components/CommandPalette";
+import InputPalette from "../components/InputPalette";
+import { AppBar, Toolbar, Typography, Box, Link } from "@material-ui/core";
+import { saveState } from "../utils/localStorage";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+store.subscribe(() => {
+  saveState(store.getState().todo);
+});
 
 const App: React.FC = () => {
-  const handleSbumit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-  };
-
   return (
-    <div>
+    <Provider store={store}>
+      <CssBaseline />
       <AppBar position="sticky">
         <Toolbar>
           <Typography>CTODO</Typography>
         </Toolbar>
       </AppBar>
-      <Container>
-        <form noValidate autoComplete="off" onSubmit={handleSbumit}>
-          <TextField
-            id="command"
-            label="Command"
-            fullWidth={true}
-            margin="normal"
-            placeholder="Type command"
-          />
-        </form>
-        <List>
-          {[0, 1, 2, 3].map((value) => {
-            return (
-              <ListItem dense button key={value}>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={true}
-                    tabIndex={-1}
-                    disableRipple
-                  />
-                </ListItemIcon>
-                <ListItemText primary={`todo ${value}`} />
-              </ListItem>
-            );
-          })}
-        </List>
-      </Container>
-    </div>
+      <Box p={2}>
+        <CommandPalette />
+        <InputPalette />
+        <TodoList />
+      </Box>
+      <Box component="footer" borderTop={1} p={2}>
+        <Typography align="center" component="footer" variant="caption">
+          &copy; 2020{" "}
+          <Link href="https://github.com/kzhrk" target="_blank" rel="noopener">
+            kzhrk
+          </Link>
+        </Typography>
+      </Box>
+    </Provider>
   );
 };
 

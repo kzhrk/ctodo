@@ -1,5 +1,6 @@
 ---
 name: 'Improvement Suggestions'
+about: 'Improvement suggestions for web apps are here'
 labels: improvement
 ---
 
