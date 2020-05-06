@@ -51,11 +51,11 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - stg-deploy:
+      - deploy:
           project: stg-ctodo
-      - prod-deploy:
-          project: ctodo
-          filters:
-            branches:
-              only:
-                - master
+      # - deploy:
+      #     project: ctodo
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
