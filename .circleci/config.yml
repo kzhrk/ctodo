@@ -8,7 +8,7 @@ commands:
     parameters:
       now-project:
         type: string
-        default: ~/stg-ctodo
+        default: stg-ctodo
     steps:
       - checkout
       - node/install:
@@ -20,11 +20,15 @@ commands:
             node -v
             npm -v
             yarn -v
+            ls -l
+            pwd
       - node/install-packages:
-          app-dir: << parameters.now-project >>
           pkg-manager: yarn
           cache-key: yarn.lock
-
+      - run:
+          name: Move project dir
+          command: |
+            mv project << parameters.now-project >>
 jobs:
   build:
     executor:
