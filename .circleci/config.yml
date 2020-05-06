@@ -5,6 +5,10 @@ orbs:
 
 commands:
   setup:
+    parameters:
+      now-project:
+        type: string
+        default: stg-ctodo
     steps:
       - checkout
       - node/install:
@@ -16,18 +20,8 @@ commands:
             node -v
             npm -v
             yarn -v
-      - run:
-          name: Set env variables
-          command: |
-            if [ ${CIRCLE_BRANCH} = master ]; then
-              echo "export APP_DIR=~/ctodo" >> $BASH_ENV
-              source $BASH_ENV
-            else
-              echo "export APP_DIR=~/stg-ctodo" >> $BASH_ENV
-              source $BASH_ENV
-            fi
       - node/install-packages:
-          app-dir: $APP_DIR
+          app-dir: << parameters.now-project >>
           pkg-manager: yarn
           cache-key: yarn.lock
 
@@ -50,7 +44,6 @@ jobs:
       - run:
           name: deploy to now
           command: |
-            cd ~/project
             yarn deploy:production
 
 workflows:
